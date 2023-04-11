@@ -7,6 +7,9 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   base: "/admin-one-vue-tailwind/",
   plugins: [vue()],
+  server:{
+    port : 3000
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
