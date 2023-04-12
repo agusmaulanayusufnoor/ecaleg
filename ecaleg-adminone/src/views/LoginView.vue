@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { mdiAccount, mdiAsterisk } from "@mdi/js";
 import SectionFullScreen from "@/components/SectionFullScreen.vue";
@@ -13,11 +14,23 @@ import LayoutGuest from "@/layouts/LayoutGuest.vue";
 
 import axios from 'axios'
 
-const form = reactive({
-  login: "john.doe",
-  pass: "highly-secure-password-fYjUw-",
-  remember: true,
+const form = ref({
+  email: '',
+  password: '',
 });
+
+const submitLogin = async () => {
+  await axios.post('/login', {
+    email: form.value.email,
+    password: form.value.password,
+    remember: true,
+  });
+}
+// const form = reactive({
+//   login: "john.doe",
+//   pass: "highly-secure-password-fYjUw-",
+//   remember: true,
+// });
 const user = reactive({
   email: "john.doe",
   password: "highly-secure-password-fYjUw-",
@@ -35,19 +48,20 @@ const submit = () => {
 <template>
   <LayoutGuest>
     <SectionFullScreen v-slot="{ cardClass }" bg="purplePink">
-      <CardBox :class="cardClass" is-form @submit.prevent="submit">
-        <FormField label="Login" help="Please enter your login">
+      <CardBox :class="cardClass" is-form @submit.prevent="submitLogin">
+        <FormField label="Login" help="nama@domain.com">
           <FormControl
-            v-model="user.email"
+            v-model="form.email"
             :icon="mdiAccount"
             name="user"
             autocomplete="username"
+            placeholder="email"
           />
         </FormField>
 
-        <FormField label="Password" help="Please enter your password">
+        <FormField label="Password" help="min. 8 huruf">
           <FormControl
-            v-model="user.password"
+            v-model="form.password"
             :icon="mdiAsterisk"
             type="password"
             name="password"
@@ -65,7 +79,7 @@ const submit = () => {
         <template #footer>
           <BaseButtons>
             <BaseButton type="submit" color="info" label="Login" />
-            <BaseButton to="/dashboard" color="info" outline label="Back" />
+            <!-- <BaseButton to="/dashboard" color="info" outline label="Back" /> -->
           </BaseButtons>
         </template>
       </CardBox>
