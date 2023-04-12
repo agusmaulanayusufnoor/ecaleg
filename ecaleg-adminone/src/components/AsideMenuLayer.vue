@@ -5,7 +5,9 @@ import { useStyleStore } from "@/stores/style.js";
 import AsideMenuList from "@/components/AsideMenuList.vue";
 import AsideMenuItem from "@/components/AsideMenuItem.vue";
 import BaseIcon from "@/components/BaseIcon.vue";
+import { useAuthStore } from "../stores/auth";
 
+const authStore = useAuthStore();
 defineProps({
   menu: {
     type: Array,
@@ -70,7 +72,7 @@ const asideLgCloseClick = (event) => {
       </div>
 
       <ul>
-        <AsideMenuItem :item="logoutItem" @menu-click="menuClick" />
+        <AsideMenuItem :item="logoutItem" @click="authStore.handleLogout" />
       </ul>
     </div>
   </aside>

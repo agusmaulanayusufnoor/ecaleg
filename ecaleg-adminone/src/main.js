@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 
 import App from "./App.vue";
@@ -6,17 +6,15 @@ import router from "./router";
 import { useMainStore } from "@/stores/main.js";
 import { useStyleStore } from "@/stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
-
+import "./axios.js";
 import "./css/main.css";
-//import axios
-import axios from 'axios'
 
-//set credential axios with true
-axios.defaults.withCredentials = true
 
 /* Init Pinia */
 const pinia = createPinia();
-
+pinia.use(({ store }) => {
+  store.router = markRaw(router);
+});
 /* Create Vue app */
 createApp(App).use(router).use(pinia).mount("#app");
 
