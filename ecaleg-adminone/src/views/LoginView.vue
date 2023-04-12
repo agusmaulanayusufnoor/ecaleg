@@ -12,7 +12,7 @@ import FormControl from "@/components/FormControl.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseButtons from "@/components/BaseButtons.vue";
 import LayoutGuest from "@/layouts/LayoutGuest.vue";
-import axios from "axios";
+// import axios from "axios";
 
 
 const router = useRouter();
@@ -26,10 +26,10 @@ const form = ref({
 
 
 
-onMounted(async () => {
-  const data = await axios.get("/api/user");
-  console.log(data);
-});
+// onMounted(async () => {
+//   const data = await axios.get("/api/user");
+//   console.log(data);
+// });
 </script>
 
 <template>

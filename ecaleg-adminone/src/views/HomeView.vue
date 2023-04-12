@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
-import { useMainStore } from "@/stores/main";
+// import { useMainStore } from "@/stores/main";
+import { useAuthStore } from "../stores/auth";
 import {
   mdiAccountMultiple,
   mdiCartOutline,
@@ -25,20 +26,25 @@ import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.
 import SectionBannerStarOnGitHub from "@/components/SectionBannerStarOnGitHub.vue";
 
 const chartData = ref(null);
-
+const authStore = useAuthStore();
 const fillChartData = () => {
   chartData.value = chartConfig.sampleChartData();
 };
 
-onMounted(() => {
+// onMounted(async () => {
+//   await authStore.getUser();
+//   console.log(data);
+// });
+onMounted(async () => {
+  await authStore.getUser();
   fillChartData();
 });
 
-const mainStore = useMainStore();
+// const mainStore = useMainStore();
 
-const clientBarItems = computed(() => mainStore.clients.slice(0, 4));
+// const clientBarItems = computed(() => mainStore.clients.slice(0, 4));
 
-const transactionBarItems = computed(() => mainStore.history);
+// const transactionBarItems = computed(() => mainStore.history);
 </script>
 
 <template>
@@ -59,7 +65,13 @@ const transactionBarItems = computed(() => mainStore.history);
           small
         />
       </SectionTitleLineWithButton>
-
+      <div v-if="authStore.user">
+      <h1>{{ authStore.user.name }}</h1>
+      <p>{{ authStore.user.email }}</p>
+    </div>
+    <div v-else>
+      <h1>Go and login</h1>
+    </div>
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
         <CardBoxWidget
           trend="12%"
@@ -90,7 +102,7 @@ const transactionBarItems = computed(() => mainStore.history);
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div class="flex flex-col justify-between">
+        <!-- <div class="flex flex-col justify-between">
           <CardBoxTransaction
             v-for="(transaction, index) in transactionBarItems"
             :key="index"
@@ -101,8 +113,8 @@ const transactionBarItems = computed(() => mainStore.history);
             :name="transaction.name"
             :account="transaction.account"
           />
-        </div>
-        <div class="flex flex-col justify-between">
+        </div> -->
+        <!-- <div class="flex flex-col justify-between">
           <CardBoxClient
             v-for="client in clientBarItems"
             :key="client.id"
@@ -111,7 +123,7 @@ const transactionBarItems = computed(() => mainStore.history);
             :date="client.created"
             :progress="client.progress"
           />
-        </div>
+        </div> -->
       </div>
 
       <SectionBannerStarOnGitHub class="mt-6 mb-6" />
